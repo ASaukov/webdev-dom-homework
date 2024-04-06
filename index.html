@@ -9,8 +9,8 @@
 
 <body>
   <div class="container">
-    <ul id="comments" class="comments">
-      <li id="comment" class="comment">
+    <ul id="list" class="comments">
+      <!-- <li class="comment">
         <div class="comment-header">
           <div>Глеб Фокин</div>
           <div>12.02.22 12:18</div>
@@ -43,7 +43,7 @@
             <button class="like-button -active-like"></button>
           </div>
         </div>
-      </li>
+      </li> -->
     </ul>
     <div class="add-form">
       <input id="input" type="text" class="add-form-name" placeholder="Введите ваше имя" />
@@ -65,9 +65,70 @@
   const buttonEl = document.getElementById('button');
   const inputName = document.getElementById('input');
   const textareaComment = document.getElementById('textarea');
-  const commentsCart = document.getElementById('comments');
-  const commentUser = document.getElementById('comment');
+  const listCart = document.getElementById('list');
   
+  
+  const comments = [
+    {
+      name: "Глеб Фокин",
+      date: "12.02.22 12:18",
+      comment: "Это будет первый комментарий на этой странице",
+      likes: 3,
+      activeLike: false,
+    },
+    {
+      name: "Варвара Н.",
+      date: "13.02.22 19:22",
+      comment: "Мне нравится как оформлена эта страница! ❤",
+      likes: 75,
+      activeLike: true,
+    },
+  ];
+
+    const renderComments = () => {
+      const commentsHtml = comments.map((comment, index) => {
+        return `<li class="comment">
+          <div class="comment-header">
+            <div>${comment.name}</div>
+            <div>${comment.date}</div>
+          </div> 
+          <div class="comment-body">
+            <div class="comment-text"> 
+              ${comment.comment}
+            </div>
+          </div>
+          <div class="comment-footer">
+            <div class="likes">
+              <span class="likes-counter">${comment.likes}</span>
+              <button class="like-button ${comment.activeLike ? '-active-like' : ''}" data-index='${index}'></button>
+            </div>
+          </div>
+        </li>`;
+      })
+      .join('');
+      listCart.innerHTML = commentsHtml;
+      changementLikes();
+    };
+
+    renderComments();
+
+    function changementLikes () {
+      const likeButtons = document.querySelectorAll('.like-button');
+      for (const likeButton of likeButtons) {
+        likeButton.addEventListener('click', () => {
+          if (comments[likeButton.dataset.index].activeLike) {
+            comments[likeButton.dataset.index].activeLike = false;
+            comments[likeButton.dataset.index].likes --;
+          } else {
+            comments[likeButton.dataset.index].activeLike = true;
+            comments[likeButton.dataset.index].likes ++;
+          }
+          renderComments();
+        });
+      }
+    };
+    
+
   const getDate = () => {
     const d = new Date();
   function addZero(a) {
@@ -80,37 +141,32 @@
   let min = addZero(d.getMinutes());
   const userDate = date + '.' + month + '.' + year + ' ' + hours + ':' + min;
   return userDate;
-  }
+  };
 
-  buttonEl.addEventListener('click', function (e) {
+
+  buttonEl.addEventListener('click', () => {
     inputName.classList.remove("error");
     textareaComment.classList.remove("error");
     if (inputName.value === '' || textareaComment.value === '') {
         inputName.classList.add("error"), textareaComment.classList.add("error");
        return;
     }
-    const addCommentsCart = commentsCart.innerHTML;
-    commentsCart.innerHTML = addCommentsCart + `<li id="comment" class="comment">
-          <div class="comment-header">
-            <div>${inputName.value}</div>
-            <div>${getDate()}</div>
-          </div> 
-          <div class="comment-body">
-            <div class="comment-text"> 
-              ${textareaComment.value}
-            </div>
-          </div>
-          <div class="comment-footer">
-            <div class="likes">
-              <span class="likes-counter">0</span>
-              <button class="like-button"></button>
-            </div>
-          </div>
-        </li>`;
+
+    comments.push({
+        name: inputName.value,
+        date: getDate(),
+        comment: textareaComment.value,
+        likes: 0,
+        activeLike: false,
+  });
+        changementLikes();
+        renderComments();
+
         inputName.value = "";
         textareaComment.value = "";
+        
   });
-
+ 
   console.log("It works!");
 </script>
 
