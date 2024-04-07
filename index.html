@@ -82,7 +82,7 @@
       const commentHtml = document.querySelectorAll('.comment');
       commentHtml.forEach((el, index) => {
         el.addEventListener('click', function () {
-          textareaComment.value = `>${comments[index].comment}\n ${comments[index].name}`;
+          textareaComment.value = `QUOTE_BEGIN ${comments[index].comment}\n ${comments[index].name} QUOTE_END`;
         });
       });
     }
@@ -107,7 +107,8 @@
     };
     
     function protectInput(text) {
-      return text.replaceAll('<', '&lt').replaceAll('>', '&gt');
+      return text.replaceAll('<', '&lt').replaceAll('>', '&gt')
+      .replaceAll('QUOTE_BEGIN', '<div class="quote">').replaceAll('QUOTE_END', '</div>');
     }
 
   const getDate = () => {
