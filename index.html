@@ -33,37 +33,36 @@
   const textareaComment = document.getElementById('textarea');
   const listCart = document.getElementById('list');
   
-  fetch("https://wedev-api.sky.pro/api/v1/:aleksandr-saukov/comments", {
+  const fetchComments = () => {
+    fetch("https://wedev-api.sky.pro/api/v1/:aleksandr-saukov/comments", {
     method: "GET",
   }).then((response) => {
    response.json().then((responseData) => {
-      comments = responseData.comments;
+    const appComments = responseData.comments.map((comment) => {
+      return {
+        name: comment.author.name,
+        date: getDate (comment.date),
+        text: comment.text,
+        likes: comment.likes,
+        isLiked: false,
+      };
+    });
+    comments = appComments;
       renderComments();
     });
   });
+  };
+  fetchComments();
+
   
-  let comments = [
-    // {
-    //   author: {name: "Глеб Фокин"},
-    //   date: "12.02.22 12:18",
-    //   text: "Это будет первый комментарий на этой странице",
-    //   likes: 3,
-    //   isLiked: false,
-    // },
-    // {
-    //   author: {name: "Варвара Н."},
-    //   date: "13.02.22 19:22",
-    //   text: "Мне нравится как оформлена эта страница! ❤",
-    //   likes: 75,
-    //   isLiked: true,
-    // },
-  ];
+  
+  let comments = [];
 
     const renderComments = () => {
       const commentsHtml = comments.map((comment, index) => {
         return `<li class="comment">
           <div class="comment-header">
-            <div>${comment.author.name}</div>
+            <div>${comment.name}</div>
             <div>${comment.date}</div>
           </div> 
           <div class="comment-body">
@@ -90,7 +89,7 @@
       const commentHtml = document.querySelectorAll('.comment');
       commentHtml.forEach((el, index) => {
         el.addEventListener('click', function () {
-          textareaComment.value = `QUOTE_BEGIN ${comments[index].text}\n ${comments[index].author.name} QUOTE_END`;
+          textareaComment.value = `QUOTE_BEGIN ${comments[index].text}\n ${comments[index].name} QUOTE_END`;
         });
       });
     }
@@ -119,7 +118,7 @@
       .replaceAll('QUOTE_BEGIN', '<div class="quote">').replaceAll('QUOTE_END', '</div>');
     }
 
-  const getDate = () => {
+  function getDate () {
     const d = new Date();
   function addZero(a) {
     return (a < 10) ? '0' + a : a;
@@ -148,15 +147,7 @@ inputName.addEventListener('input', function (e) {
     if (inputName.value === '' || textareaComment.value === '') {
         inputName.classList.add("error"), textareaComment.classList.add("error");
        return;
-    }
-
-  //   comments.push({
-  //       author: {name: protectInput(inputName.value)},
-  //       date: getDate(),
-  //       text: protectInput(textareaComment.value),
-  //       likes: 0,
-  //       isLiked: false,
-  // });
+    };
 
   fetch("https://wedev-api.sky.pro/api/v1/:aleksandr-saukov/comments", {
     method: "POST",
@@ -166,14 +157,7 @@ inputName.addEventListener('input', function (e) {
     })
   }).then((response) => {
    response.json().then((responseData) => {
-      fetch("https://wedev-api.sky.pro/api/v1/:aleksandr-saukov/comments", {
-    method: "GET",
-    }).then((response) => {
-      response.json().then((responseData) => {
-        comments = responseData.comments;
-          renderComments();
-        });
-      });
+    fetchComments();
       renderComments();
     });
   });
