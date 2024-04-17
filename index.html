@@ -29,28 +29,34 @@
 <script>
   "use strict";
   const buttonEl = document.getElementById('button');
-  const inputName = document.getElementById('input');
+  const inputName = document.querySelector('input');
   const textareaComment = document.getElementById('textarea');
   const listCart = document.getElementById('list');
   
+  const fetchComments = () => {
+    fetch("https://wedev-api.sky.pro/api/v1/:aleksandr-saukov/comments", {
+    method: "GET",
+  }).then((response) => {
+   response.json().then((responseData) => {
+    const appComments = responseData.comments.map((comment) => {
+      return {
+        name: comment.author.name,
+        date: getDate (comment.date),
+        text: comment.text,
+        likes: comment.likes,
+        isLiked: false,
+      };
+    });
+    comments = appComments;
+      renderComments();
+    });
+  });
+  };
+  fetchComments();
+
   
   
-  const comments = [
-    {
-      name: "Глеб Фокин",
-      date: "12.02.22 12:18",
-      comment: "Это будет первый комментарий на этой странице",
-      likes: 3,
-      activeLike: false,
-    },
-    {
-      name: "Варвара Н.",
-      date: "13.02.22 19:22",
-      comment: "Мне нравится как оформлена эта страница! ❤",
-      likes: 75,
-      activeLike: true,
-    },
-  ];
+  let comments = [];
 
     const renderComments = () => {
       const commentsHtml = comments.map((comment, index) => {
@@ -61,13 +67,13 @@
           </div> 
           <div class="comment-body">
             <div class="comment-text"> 
-              ${comment.comment}
+              ${comment.text}
             </div>
           </div>
           <div class="comment-footer">
             <div class="likes">
               <span class="likes-counter">${comment.likes}</span>
-              <button class="like-button ${comment.activeLike ? '-active-like' : ''}" data-index='${index}'></button>
+              <button class="like-button ${comment.isLiked ? '-active-like' : ''}" data-index='${index}'></button>
             </div>
           </div>
         </li>`;
@@ -78,11 +84,12 @@
       answerComment();
     };
     
+
     function answerComment() {
       const commentHtml = document.querySelectorAll('.comment');
       commentHtml.forEach((el, index) => {
         el.addEventListener('click', function () {
-          textareaComment.value = `QUOTE_BEGIN ${comments[index].comment}\n ${comments[index].name} QUOTE_END`;
+          textareaComment.value = `QUOTE_BEGIN ${comments[index].text}\n ${comments[index].name} QUOTE_END`;
         });
       });
     }
@@ -94,11 +101,11 @@
       for (const likeButton of likeButtons) {
         likeButton.addEventListener('click', (e) => {
           e.stopPropagation();
-          if (comments[likeButton.dataset.index].activeLike) {
-            comments[likeButton.dataset.index].activeLike = false;
+          if (comments[likeButton.dataset.index].isLiked) {
+            comments[likeButton.dataset.index].isLiked = false;
             comments[likeButton.dataset.index].likes --;
           } else {
-            comments[likeButton.dataset.index].activeLike = true;
+            comments[likeButton.dataset.index].isLiked = true;
             comments[likeButton.dataset.index].likes ++;
           }
           renderComments();
@@ -111,7 +118,7 @@
       .replaceAll('QUOTE_BEGIN', '<div class="quote">').replaceAll('QUOTE_END', '</div>');
     }
 
-  const getDate = () => {
+  function getDate () {
     const d = new Date();
   function addZero(a) {
     return (a < 10) ? '0' + a : a;
@@ -125,6 +132,14 @@
   return userDate;
   };
 
+buttonEl.setAttribute('disabled', true);
+inputName.addEventListener('input', function (e) {
+  if (inputName.value.trim() === '') {
+    buttonEl.setAttribute('disabled', true);
+  } else {
+    buttonEl.removeAttribute('disabled')
+  }
+});
 
   buttonEl.addEventListener('click', () => {
     inputName.classList.remove("error");
@@ -132,14 +147,19 @@
     if (inputName.value === '' || textareaComment.value === '') {
         inputName.classList.add("error"), textareaComment.classList.add("error");
        return;
-    }
+    };
 
-    comments.push({
-        name: protectInput(inputName.value),
-        date: getDate(),
-        comment: protectInput(textareaComment.value),
-        likes: 0,
-        activeLike: false,
+  fetch("https://wedev-api.sky.pro/api/v1/:aleksandr-saukov/comments", {
+    method: "POST",
+    body: JSON.stringify ({
+      text: protectInput(textareaComment.value),
+      name: protectInput(inputName.value)
+    })
+  }).then((response) => {
+   response.json().then((responseData) => {
+    fetchComments();
+      renderComments();
+    });
   });
         changementLikes();
         renderComments();
