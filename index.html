@@ -36,12 +36,15 @@
   const fetchComments = () => {
     fetch("https://wedev-api.sky.pro/api/v1/:aleksandr-saukov/comments", {
     method: "GET",
-  }).then((response) => {
-   response.json().then((responseData) => {
+  })
+  .then((response) => {
+   return response.json();
+  })
+  .then((responseData) => {
     const appComments = responseData.comments.map((comment) => {
       return {
         name: comment.author.name,
-        date: getDate (comment.date),
+        date: comment.date,
         text: comment.text,
         likes: comment.likes,
         isLiked: false,
@@ -50,7 +53,7 @@
     comments = appComments;
       renderComments();
     });
-  });
+  
   };
   fetchComments();
 
@@ -118,8 +121,8 @@
       .replaceAll('QUOTE_BEGIN', '<div class="quote">').replaceAll('QUOTE_END', '</div>');
     }
 
-  function getDate () {
-    const d = new Date();
+  const getDate = () => {
+    let d = new Date(comment.date);
   function addZero(a) {
     return (a < 10) ? '0' + a : a;
   }
@@ -131,6 +134,7 @@
   const userDate = date + '.' + month + '.' + year + ' ' + hours + ':' + min;
   return userDate;
   };
+  
 
 buttonEl.setAttribute('disabled', true);
 inputName.addEventListener('input', function (e) {
@@ -155,17 +159,20 @@ inputName.addEventListener('input', function (e) {
       text: protectInput(textareaComment.value),
       name: protectInput(inputName.value)
     })
-  }).then((response) => {
-   response.json().then((responseData) => {
+  })
+  .then((response) => {
+   return response.json();
+  })
+  .then((responseData) => {
     fetchComments();
       renderComments();
     });
-  });
-        changementLikes();
-        renderComments();
+  
+    changementLikes();
+    renderComments();
 
-        inputName.value = "";
-        textareaComment.value = "";
+    inputName.value = "";
+    textareaComment.value = "";
         
   });
  
