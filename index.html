@@ -9,6 +9,7 @@
 
 <body>
   <div class="container">
+    <span class="loader-comments hidden" > Пожалуйста подождите, идет загрузка комментариев...</span>
     <ul id="list" class="comments">
     </ul>
     <div class="add-form">
@@ -32,8 +33,12 @@
   const inputName = document.querySelector('input');
   const textareaComment = document.getElementById('textarea');
   const listCart = document.getElementById('list');
+  const loaderComments = document.querySelector('.loader-comments');
   
+  console.log(listCart.innerHTML);
+
   const fetchComments = () => {
+    loaderComments.classList.remove("hidden")
     fetch("https://wedev-api.sky.pro/api/v1/:aleksandr-saukov/comments", {
     method: "GET",
   })
@@ -41,6 +46,7 @@
    return response.json();
   })
   .then((responseData) => {
+    loaderComments.classList.add("hidden")
     const appComments = responseData.comments.map((comment) => {
       return {
         name: comment.author.name,
@@ -57,8 +63,6 @@
   };
   fetchComments();
 
-  
-  
   let comments = [];
 
     const renderComments = () => {
@@ -66,7 +70,7 @@
         return `<li class="comment">
           <div class="comment-header">
             <div>${comment.name}</div>
-            <div>${comment.date}</div>
+            <div>${getDate(comment.date)}</div>
           </div> 
           <div class="comment-body">
             <div class="comment-text"> 
@@ -121,8 +125,8 @@
       .replaceAll('QUOTE_BEGIN', '<div class="quote">').replaceAll('QUOTE_END', '</div>');
     }
 
-  const getDate = () => {
-    let d = new Date(comment.date);
+  const getDate = (commentDate) => {
+    let d = new Date(commentDate);
   function addZero(a) {
     return (a < 10) ? '0' + a : a;
   }
