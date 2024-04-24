@@ -9,8 +9,10 @@
 
 <body>
   <div class="container">
+    <span class="loader-comments hidden" > Пожалуйста подождите, идет загрузка комментариев...</span>
     <ul id="list" class="comments">
     </ul>
+    <span class="loader-newcomment hidden">Загрузка комментария...</span>
     <div class="add-form">
       <input id="input" type="text" class="add-form-name" placeholder="Введите ваше имя" />
       <textarea id="textarea" type="textarea" class="add-form-text" placeholder="Введите ваш коментарий"
@@ -32,16 +34,27 @@
   const inputName = document.querySelector('input');
   const textareaComment = document.getElementById('textarea');
   const listCart = document.getElementById('list');
-  
+  const loaderComments = document.querySelector('.loader-comments');
+  const loaderNewcomment = document.querySelector('.loader-newcomment');
+  const formEl = document.querySelector('.add-form');
+
+  loaderComments.classList.remove("hidden")
   const fetchComments = () => {
+    
     fetch("https://wedev-api.sky.pro/api/v1/:aleksandr-saukov/comments", {
     method: "GET",
-  }).then((response) => {
-   response.json().then((responseData) => {
+  })
+  .then((response) => {
+   return response.json();
+  })
+  .then((responseData) => {
+    loaderComments.classList.add("hidden")
+    formEl.classList.remove("hidden");
+    loaderNewcomment.classList.add("hidden");
     const appComments = responseData.comments.map((comment) => {
       return {
         name: comment.author.name,
-        date: getDate (comment.date),
+        date: comment.date,
         text: comment.text,
         likes: comment.likes,
         isLiked: false,
@@ -50,12 +63,10 @@
     comments = appComments;
       renderComments();
     });
-  });
+  
   };
   fetchComments();
 
-  
-  
   let comments = [];
 
     const renderComments = () => {
@@ -63,7 +74,7 @@
         return `<li class="comment">
           <div class="comment-header">
             <div>${comment.name}</div>
-            <div>${comment.date}</div>
+            <div>${getDate(comment.date)}</div>
           </div> 
           <div class="comment-body">
             <div class="comment-text"> 
@@ -92,9 +103,10 @@
           textareaComment.value = `QUOTE_BEGIN ${comments[index].text}\n ${comments[index].name} QUOTE_END`;
         });
       });
-    }
+    };
 
     renderComments();
+
 
     function changementLikes () {
       const likeButtons = document.querySelectorAll('.like-button');
@@ -118,8 +130,8 @@
       .replaceAll('QUOTE_BEGIN', '<div class="quote">').replaceAll('QUOTE_END', '</div>');
     }
 
-  function getDate () {
-    const d = new Date();
+  const getDate = (commentDate) => {
+    let d = new Date(commentDate);
   function addZero(a) {
     return (a < 10) ? '0' + a : a;
   }
@@ -131,6 +143,7 @@
   const userDate = date + '.' + month + '.' + year + ' ' + hours + ':' + min;
   return userDate;
   };
+  
 
 buttonEl.setAttribute('disabled', true);
 inputName.addEventListener('input', function (e) {
@@ -142,6 +155,7 @@ inputName.addEventListener('input', function (e) {
 });
 
   buttonEl.addEventListener('click', () => {
+    
     inputName.classList.remove("error");
     textareaComment.classList.remove("error");
     if (inputName.value === '' || textareaComment.value === '') {
@@ -149,23 +163,31 @@ inputName.addEventListener('input', function (e) {
        return;
     };
 
+    loaderNewcomment.classList.remove("hidden");
+    formEl.classList.add("hidden");
+
   fetch("https://wedev-api.sky.pro/api/v1/:aleksandr-saukov/comments", {
     method: "POST",
     body: JSON.stringify ({
       text: protectInput(textareaComment.value),
       name: protectInput(inputName.value)
     })
-  }).then((response) => {
-   response.json().then((responseData) => {
+  })
+  .then((response) => {
+   return response.json();
+  })
+  .then((responseData) => {
+    
     fetchComments();
-      renderComments();
+    
+      // renderComments();
     });
-  });
-        changementLikes();
-        renderComments();
+  
+    changementLikes();
+    renderComments();
 
-        inputName.value = "";
-        textareaComment.value = "";
+    inputName.value = "";
+    textareaComment.value = "";
         
   });
  
