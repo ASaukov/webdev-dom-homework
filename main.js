@@ -1,4 +1,7 @@
 "use strict";
+
+import { getTodos, postTodo } from "./api.js";
+
   const buttonEl = document.getElementById('button');
   const inputName = document.querySelector('input');
   const textareaComment = document.getElementById('textarea');
@@ -6,18 +9,18 @@
   const loaderComments = document.querySelector('.loader-comments');
   const loaderNewcomment = document.querySelector('.loader-newcomment');
   const formEl = document.querySelector('.add-form');
-  const apiAdres = "https://wedev-api.sky.pro/api/v1/:aleksandr-saukov/comments"
+//   const apiAdres = "https://wedev-api.sky.pro/api/v1/:aleksandr-saukov/comments"
 
   loaderComments.classList.remove("hidden")
   const fetchComments = () => {
     
-    fetch(apiAdres, {
-    method: "GET",
-  })
-  .then((response) => {
-   return response.json();
-  })
-  .then((responseData) => {
+//     fetch(apiAdres, {
+//     method: "GET",
+//   })
+//   .then((response) => {
+//    return response.json();
+//   })
+  getTodos().then((responseData) => {
     loaderComments.classList.add("hidden")
     formEl.classList.remove("hidden");
     loaderNewcomment.classList.add("hidden");
@@ -136,15 +139,18 @@ inputName.addEventListener('input', function (e) {
     loaderNewcomment.classList.remove("hidden");
     formEl.classList.add("hidden");
 
-  fetch(apiAdres, {
-    method: "POST",
-    body: JSON.stringify ({
-      text: protectInput(textareaComment.value),
-      name: protectInput(inputName.value),
-      forceError: true,
-    })
-  })
-  .then((response) => {
+//   fetch(apiAdres, {
+//     method: "POST",
+//     body: JSON.stringify ({
+//       text: protectInput(textareaComment.value),
+//       name: protectInput(inputName.value),
+//       forceError: true,
+//     })
+//   })
+  postTodo({
+    text: protectInput(textareaComment.value),
+    name: protectInput(inputName.value),
+  }).then((response) => {
     if(response.status === 400) {
       throw new Error("400")
     }
