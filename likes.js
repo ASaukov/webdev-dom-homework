@@ -1,4 +1,4 @@
-export function changementLikes ({}) {
+export function changementLikes ({comments}) {
     const likeButtons = document.querySelectorAll('.like-button');
     for (const likeButton of likeButtons) {
       likeButton.addEventListener('click', (e) => {
@@ -10,7 +10,7 @@ export function changementLikes ({}) {
           comments[likeButton.dataset.index].isLiked = true;
           comments[likeButton.dataset.index].likes ++;
         }
-        renderComments(comments);
+        renderComments({comments});
       });
     }
   };

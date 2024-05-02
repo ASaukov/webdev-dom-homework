@@ -1,5 +1,6 @@
 import { getDate } from "./getDate.js";
 import { changementLikes } from "./likes.js";
+import { answerComment } from "./main.js";
 
 const listCart = document.getElementById('list');
 
@@ -25,14 +26,6 @@ export const renderComments = ({comments}) => {
     })
     .join('');
     listCart.innerHTML = commentsHtml;
-    changementLikes({});
-    // function answerComment() {
-        const commentHtml = document.querySelectorAll('.comment');
-        commentHtml.forEach((el, index) => {
-          el.addEventListener('click', function () {
-            textareaComment.value = `QUOTE_BEGIN ${comments[index].text}\n ${comments[index].name} QUOTE_END`;
-          });
-        });
-    //   };
+    changementLikes({comments});
+    answerComment();
   };
-  
