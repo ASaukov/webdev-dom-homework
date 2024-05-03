@@ -1,6 +1,6 @@
 import { getDate } from "./getDate.js";
 import { changementLikes } from "./likes.js";
-import { answerComment } from "./main.js";
+import { answerComment } from "./answerComment.js";
 
 const listCart = document.getElementById('list');
 
@@ -27,5 +27,5 @@ export const renderComments = ({comments}) => {
     .join('');
     listCart.innerHTML = commentsHtml;
     changementLikes({comments}, {renderComments});
-    answerComment();
+    answerComment({comments}, {renderComments});
   };

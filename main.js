@@ -35,17 +35,16 @@ import { renderComments } from "./renderСomments.js";
   let comments = [];
 
   renderComments({comments});
-
-
-    export function answerComment() {
-      const commentHtml = document.querySelectorAll('.comment');
-      commentHtml.forEach((el, index) => {
-        el.addEventListener('click', function () {
-         textareaComment.value = `QUOTE_BEGIN ${comments[index].text}\n ${comments[index].name} QUOTE_END`;
-        });
-      });
-    };
     
+  // export function answerComment() {
+  //   const commentHtml = document.querySelectorAll('.comment');
+  //   commentHtml.forEach((el, index) => {
+  //     el.addEventListener('click', function () {
+  //      textareaComment.value = `QUOTE_BEGIN ${comments[index].text}\n ${comments[index].name} QUOTE_END`;
+  //     });
+  //   });
+  // };
+
     function protectInput(text) {
       return text.replaceAll('<', '&lt').replaceAll('>', '&gt')
       .replaceAll('QUOTE_BEGIN', '<div class="quote">').replaceAll('QUOTE_END', '</div>');
