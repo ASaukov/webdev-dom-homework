@@ -1,6 +1,8 @@
 "use strict";
 
 import { getTodos, postTodo } from "./api.js";
+import { fetchComments } from "./fetch.js";
+import { changementLikes } from "./likes.js";
 import { renderComments } from "./renderСomments.js";
 
   const buttonEl = document.getElementById('button');
@@ -11,39 +13,12 @@ import { renderComments } from "./renderСomments.js";
   const formEl = document.querySelector('.add-form');
 
   loaderComments.classList.remove("hidden")
-  const fetchComments = () => {
-  getTodos().then((responseData) => {
-    loaderComments.classList.add("hidden")
-    formEl.classList.remove("hidden");
-    loaderNewcomment.classList.add("hidden");
-    const appComments = responseData.comments.map((comment) => {
-      return {
-        name: comment.author.name,
-        date: comment.date,
-        text: comment.text,
-        likes: comment.likes,
-        isLiked: false,
-      };
-    });
-    comments = appComments;
-    renderComments({comments});
-    });
-  
-  };
+
   fetchComments();
 
   let comments = [];
 
   renderComments({comments});
-    
-  // export function answerComment() {
-  //   const commentHtml = document.querySelectorAll('.comment');
-  //   commentHtml.forEach((el, index) => {
-  //     el.addEventListener('click', function () {
-  //      textareaComment.value = `QUOTE_BEGIN ${comments[index].text}\n ${comments[index].name} QUOTE_END`;
-  //     });
-  //   });
-  // };
 
     function protectInput(text) {
       return text.replaceAll('<', '&lt').replaceAll('>', '&gt')
@@ -105,11 +80,11 @@ inputName.addEventListener('input', function (e) {
     console.warn(error)
     
   })
-  .then((responseData) => {
+  .then(() => {
     fetchComments();
   })
     
-    changementLikes({comments});
+    changementLikes({comments}, {renderComments});
     renderComments({comments});    
   });
  

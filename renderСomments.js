@@ -27,5 +27,5 @@ export const renderComments = ({comments}) => {
     .join('');
     listCart.innerHTML = commentsHtml;
     changementLikes({comments}, {renderComments});
-    answerComment({comments}, {renderComments});
+    answerComment({comments});
   };

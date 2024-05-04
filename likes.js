@@ -1,3 +1,5 @@
+
+
 export function changementLikes ({comments}, {renderComments}) {
     const likeButtons = document.querySelectorAll('.like-button');
     for (const likeButton of likeButtons) {
