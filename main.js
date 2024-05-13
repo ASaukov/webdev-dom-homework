@@ -1,6 +1,6 @@
 "use strict";
 
-import { getTodos, postTodo } from "./api.js";
+import { postTodo } from "./api.js";
 import { fetchComments } from "./fetch.js";
 import { changementLikes } from "./likes.js";
 import { renderComments } from "./renderСomments.js";
