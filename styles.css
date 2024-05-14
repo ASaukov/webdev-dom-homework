@@ -148,9 +148,13 @@ body {
   .hidden {
     display: none;
   }
-
+  
   .link-authorization,
   .registration {
     color: #ffffff;
     padding-top: 10px;
+  }
+
+  .title-link {
+    margin-top: 20px;
   }

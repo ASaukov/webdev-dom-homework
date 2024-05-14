@@ -1,7 +1,7 @@
 const apiAdres = "https://wedev-api.sky.pro/api/v2/:aleksandr-saukov/comments";
 const apiUser = "https://wedev-api.sky.pro/api/user/login";
 
-let token = null;
+export let token = null;
 export const getToken = () => {
 return token;
 }
@@ -13,6 +13,9 @@ export const setToken = (newToken) => {
 export function getTodos() {
     return fetch(apiAdres, {
         method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
       })
       .then((response) => {
        return response.json();
@@ -22,6 +25,9 @@ export function getTodos() {
 export function postTodo({text, name}) {
     return fetch(apiAdres, {
         method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify ({
           text: text,
           name: name,

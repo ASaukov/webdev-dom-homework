@@ -10,13 +10,13 @@
 <body>
   <div class="container">
     <span class="loader-comments hidden" > Пожалуйста подождите, идет загрузка комментариев...</span>
-    <ul id="list" class="comments">
+    <ul id="list" class="comments hidden">
     </ul>
-    <span class="loader-authorization">Что бы добавить коментарий,
-      <a class="link-authorization" href="login.html" id="link-authorization">авторизутесь</a>
+    <span class="title-link hidden" id="title-link">Что бы добавить коментарий,
+      <a class="link-authorization" href="#" id="link-authorization">авторизутесь</a>
     </span>
     <span class="loader-newcomment hidden">Загрузка комментария...</span>
-    <div class="add-form">
+    <div class="add-form hidden">
       <input id="input" type="text" class="add-form-name" placeholder="Введите ваше имя" />
       <textarea id="textarea" type="textarea" class="add-form-text" placeholder="Введите ваш коментарий"
         rows="4"></textarea>
@@ -24,6 +24,7 @@
         <button id="button" class="add-form-button">Написать</button>
       </div>
     </div>
+    <div id="app"></div>
   </div>
 </body>
 <style>

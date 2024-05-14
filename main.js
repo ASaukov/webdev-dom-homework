@@ -3,6 +3,7 @@
 import { postTodo } from "./api.js";
 import { fetchComments } from "./fetch.js";
 import { changementLikes } from "./likes.js";
+import { renderLogin } from "./loginPage.js";
 import { renderComments } from "./renderСomments.js";
 
   const buttonEl = document.getElementById('button');
@@ -11,10 +12,19 @@ import { renderComments } from "./renderСomments.js";
   const loaderComments = document.querySelector('.loader-comments');
   const loaderNewcomment = document.querySelector('.loader-newcomment');
   const formEl = document.querySelector('.add-form');
+  const linkAuthotization = document.querySelector('.link-authorization');
+  const listCart = document.getElementById('list');
+  const titleLink = document.querySelector('.title-link');
 
   loaderComments.classList.remove("hidden")
 
   fetchComments();
+
+  linkAuthotization.addEventListener('click', () => {
+    listCart.classList.add("hidden");
+    titleLink.classList.add("hidden");
+    renderLogin();
+  });
 
   let comments = [];
 
