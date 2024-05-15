@@ -5,7 +5,7 @@ import { answerComment } from "./answerComment.js";
 const listCart = document.getElementById('list');
 
 export const renderComments = ({comments}) => {
-  listCart.classList.remove("hidden");
+  // listCart.classList.remove("hidden");
     const commentsHtml = comments.map((comment, index) => {
       return `<li class="comment">
         <div class="comment-header">

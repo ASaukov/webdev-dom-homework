@@ -1,4 +1,5 @@
 import { login, setToken, token } from "./api.js";
+import { renderRegistr } from "./registrPage.js";
 
 
 export const renderLogin = () => {
@@ -6,10 +7,10 @@ export const renderLogin = () => {
     const loginHtml = `
     <div class="login-form">
         <h2 class="login-header">Форма входа</h2>
-        <input id="login-input" type="text" class="login-form-login" placeholder="Введите логин" />
-        <input id="password-input" type="text" class="login-form-password" placeholder="Введите пароль" />
+        <input id="login-input" type="text" class="input-form" placeholder="Введите логин" />
+        <input id="password-input" type="text" class="input-form" placeholder="Введите пароль" />
         <button id="login-button" class="add-form-button">Войти</button>
-        <a class="registration" href="" id="registration">Зарегистрироваться</a>
+        <a class="registration" href="#" id="registration">Зарегистрироваться</a>
       </div>`;
 
       appElement.innerHTML = loginHtml;
@@ -27,4 +28,10 @@ export const renderLogin = () => {
               console.log(token);
           });
       });
+
+    const registrElement = document.getElementById('registration');
+    registrElement.addEventListener('click', () => {
+    renderRegistr();
+    });
+    
 };
