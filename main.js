@@ -1,5 +1,6 @@
 "use strict";
 
+import { renderForm } from "./addForm.js";
 import { postTodo } from "./api.js";
 import { fetchComments } from "./fetch.js";
 import { changementLikes } from "./likes.js";
@@ -54,41 +55,11 @@ inputName.addEventListener('input', function (e) {
     };
 
     loaderNewcomment.classList.remove("hidden");
-    formEl.classList.add("hidden");
+    // formEl.classList.add("hidden");
 
   postTodo({
     text: protectInput(textareaComment.value),
     name: protectInput(inputName.value),
-  }).then((response) => {
-    if(response.status === 400) {
-      throw new Error("400")
-    }
-
-    if(response.status === 500) {
-      throw new Error("500")
-    }
-  })
-  
-  .then(() => {
-    inputName.value = "";
-    textareaComment.value = "";
-  })
-  .catch((error) => {
-    if(error) {
-      formEl.classList.remove("hidden")
-    }
-    if(error.message === "400") {
-      alert("Имя и комментарий должны быть не короче 3 символов");
-      return;
-    }
-    if(error.message === "500") {
-      alert("Сервер сломался, попробуй позже");
-      return;
-    }  
-      alert("Кажется, у вас сломался интернет, попробуйте позже");
-      return;
-    console.warn(error)
-    
   })
   .then(() => {
     fetchComments();

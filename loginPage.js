@@ -1,5 +1,8 @@
+import { renderForm } from "./addForm.js";
 import { login, setToken, token } from "./api.js";
+import { fetchComments } from "./fetch.js";
 import { renderRegistr } from "./registrPage.js";
+import { renderComments } from "./renderСomments.js";
 
 
 export const renderLogin = () => {
@@ -18,6 +21,7 @@ export const renderLogin = () => {
       const buttonElement = document.getElementById('login-button');
       const loginInputElement = document.getElementById('login-input');
       const passwordElement = document.getElementById('password-input');
+      const registrElement = document.getElementById('registration');
       
       buttonElement.addEventListener('click', () => {
           login({
@@ -26,12 +30,13 @@ export const renderLogin = () => {
           }).then((responseData) => {
               setToken(responseData.user.token);
               console.log(token);
+          }).then(() => {
+            renderForm()
           });
+           
       });
 
-    const registrElement = document.getElementById('registration');
-    registrElement.addEventListener('click', () => {
-    renderRegistr();
+      registrElement.addEventListener('click', () => {
+        renderRegistr();
     });
-    
 };

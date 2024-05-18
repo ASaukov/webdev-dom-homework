@@ -2,7 +2,7 @@ import { getDate } from "./getDate.js";
 import { changementLikes } from "./likes.js";
 import { answerComment } from "./answerComment.js";
 
-const listCart = document.getElementById('list');
+const listCart = document.querySelector('#list');
 
 export const renderComments = ({comments}) => {
   // listCart.classList.remove("hidden");

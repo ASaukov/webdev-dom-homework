@@ -1,3 +1,4 @@
+import { renderForm } from "./addForm.js";
 import { getTodos } from "./api.js";
 import { renderComments } from "./renderСomments.js";
 const loaderComments = document.querySelector('.loader-comments');
@@ -6,7 +7,8 @@ const loaderNewcomment = document.querySelector('.loader-newcomment');
 const titleLink = document.querySelector('.title-link');
 
 export const fetchComments = (comments) => {
-    getTodos().then((responseData) => {
+    getTodos()
+    .then((responseData) => {
       loaderComments.classList.add("hidden")
       // formEl.classList.remove("hidden");
       loaderNewcomment.classList.add("hidden");
@@ -24,3 +26,4 @@ export const fetchComments = (comments) => {
       renderComments({comments});
       });
     };
+    
