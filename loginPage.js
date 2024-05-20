@@ -1,12 +1,12 @@
-import { renderForm } from "./addForm.js";
-import { login, setToken, token } from "./api.js";
+
+import { login, setName, setToken, token } from "./api.js";
 import { fetchComments } from "./fetch.js";
 import { renderRegistr } from "./registrPage.js";
-import { renderComments } from "./renderСomments.js";
+// import { renderComments } from "./renderСomments.js";
 
 
 export const renderLogin = () => {
-    const appElement = document.getElementById('app');
+    const appElement = document.querySelector('#app');
     const loginHtml = `
     <div class="login-form">
         <h2 class="login-header">Форма входа</h2>
@@ -29,10 +29,11 @@ export const renderLogin = () => {
               password: passwordElement.value,
           }).then((responseData) => {
               setToken(responseData.user.token);
+              setName(responseData.user.name);
               console.log(token);
-          }).then(() => {
-            renderForm()
-          });
+          }).then(()=> {
+            fetchComments();
+          })
            
       });
 

@@ -1,7 +1,7 @@
 import { renderLogin } from "./loginPage.js";
 
 export const renderRegistr = () => {
-    const appElement = document.getElementById('app');
+    const appElement = document.querySelector('#app');
     const registrHtml = `
     <div class="login-form">
         <h2 class="login-header">Форма регистрации</h2>

@@ -10,6 +10,11 @@ export const setToken = (newToken) => {
   token = newToken;
   }
 
+  export let user = null;
+  export const setName = (newName) => {
+    user = newName
+  }
+
 export function getTodos() {
     return fetch(apiAdres, {
         method: "GET",

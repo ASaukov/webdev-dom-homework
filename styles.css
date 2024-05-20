@@ -154,13 +154,14 @@ body {
   .link-authorization,
   .registration {
     color: #ffffff;
-    padding-top: 10px;
+  
   }
 
   .title-link {
     margin-top: 20px;
   }
   
+  .title-link,
   .registration,
   .enter-login {
     display: flex;

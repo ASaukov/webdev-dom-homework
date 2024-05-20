@@ -1,18 +1,16 @@
-import { renderForm } from "./addForm.js";
-import { getTodos } from "./api.js";
+
+import { getTodos, postTodo } from "./api.js";
+import { changementLikes } from "./likes.js";
 import { renderComments } from "./renderСomments.js";
-const loaderComments = document.querySelector('.loader-comments');
-const formEl = document.querySelector('.add-form');
-const loaderNewcomment = document.querySelector('.loader-newcomment');
-const titleLink = document.querySelector('.title-link');
+
+// const titleLink = document.querySelector('.title-link');
 
 export const fetchComments = (comments) => {
     getTodos()
     .then((responseData) => {
       loaderComments.classList.add("hidden")
-      // formEl.classList.remove("hidden");
       loaderNewcomment.classList.add("hidden");
-      titleLink.classList.remove('hidden');
+      // titleLink.classList.remove('hidden');
       const appComments = responseData.comments.map((comment) => {
         return {
           name: comment.author.name,
@@ -25,5 +23,10 @@ export const fetchComments = (comments) => {
       comments = appComments;
       renderComments({comments});
       });
-    };
+     
+      const loaderComments = document.querySelector('.loader-comments');
+      const loaderNewcomment = document.querySelector('.loader-newcomment');
+    
+
+  };
     
