@@ -1,16 +1,15 @@
 
-import { getTodos, postTodo } from "./api.js";
-import { changementLikes } from "./likes.js";
+import { getTodos } from "./api.js";
 import { renderComments } from "./renderСomments.js";
 
-// const titleLink = document.querySelector('.title-link');
+  const loaderComments = document.querySelector('.loader-comments');
+  const loaderNewcomment = document.querySelector('.loader-newcomment');
 
 export const fetchComments = (comments) => {
     getTodos()
     .then((responseData) => {
       loaderComments.classList.add("hidden")
       loaderNewcomment.classList.add("hidden");
-      // titleLink.classList.remove('hidden');
       const appComments = responseData.comments.map((comment) => {
         return {
           name: comment.author.name,
@@ -23,10 +22,5 @@ export const fetchComments = (comments) => {
       comments = appComments;
       renderComments({comments});
       });
-     
-      const loaderComments = document.querySelector('.loader-comments');
-      const loaderNewcomment = document.querySelector('.loader-newcomment');
-    
-
   };
     

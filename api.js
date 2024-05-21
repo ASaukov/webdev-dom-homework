@@ -48,25 +48,8 @@ export function postTodo({text, name}) {
           throw new Error("500")
         }
       })
-      .then(() => {
-        inputName.value = "";
-        textareaComment.value = "";
-      })
-      .catch((error) => {
-        if(error) {
-          formEl.classList.remove("hidden")
-        }
-        if(error.message === "400") {
-          alert("Имя и комментарий должны быть не короче 3 символов");
-          return;
-        }
-        if(error.message === "500") {
-          alert("Сервер сломался, попробуй позже");
-          return;
-        }  
-          alert("Кажется, у вас сломался интернет, попробуйте позже");
-          return;
-      })
+      
+      
 };
 
 export function login({login, password}) {

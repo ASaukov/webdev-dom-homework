@@ -1,10 +1,9 @@
 import { getDate } from "./getDate.js";
 import { changementLikes } from "./likes.js";
 import { answerComment } from "./answerComment.js";
-import { user, token, postTodo } from "./api.js";
+import { user, token } from "./api.js";
 import { renderLogin } from "./loginPage.js";
-import { protectInput } from "./main.js";
-import { fetchComments } from "./fetch.js";
+import { formEvents } from "./main.js";
 
 
 
@@ -34,7 +33,7 @@ export const renderComments = ({comments}) => {
     const appHtml = `
     <ul id="list" class="comments">${commentsHtml}</ul>
     <div class="add-form">
-      <input id="input" type="text" readonly class="add-form-name" placeholder=${user} />
+      <input id="input" type="text" readonly class="add-form-name" value=${user} />
       <textarea id="textarea" type="textarea" class="add-form-text" placeholder="Введите ваш коментарий"
         rows="4"></textarea>
       <div class="add-form-row">
@@ -52,14 +51,10 @@ export const renderComments = ({comments}) => {
       appElement.innerHTML = appHtml;
       changementLikes({comments}, {renderComments});
       answerComment({comments});
-      
+      formEvents();
     } else {
       appElement.innerHTML = appNoToken;
-    }
-
-    // inputName.setAttribute('disabled', 'disabled')
-
-    const linkAuthotization = document.querySelector('.link-authorization');
+      const linkAuthotization = document.querySelector('.link-authorization');
     linkAuthotization.addEventListener('click', () => {
       const listCart = document.getElementById('list');
       const titleLink = document.querySelector('.title-link');
@@ -67,6 +62,6 @@ export const renderComments = ({comments}) => {
       titleLink.classList.add("hidden");
       renderLogin();
     });
-
+    }
 
   };

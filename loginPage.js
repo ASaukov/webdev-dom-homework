@@ -2,7 +2,6 @@
 import { login, setName, setToken, token } from "./api.js";
 import { fetchComments } from "./fetch.js";
 import { renderRegistr } from "./registrPage.js";
-// import { renderComments } from "./renderСomments.js";
 
 
 export const renderLogin = () => {
@@ -33,6 +32,7 @@ export const renderLogin = () => {
               console.log(token);
           }).then(()=> {
             fetchComments();
+            
           })
            
       });

@@ -2,8 +2,11 @@
 
 import { postTodo } from "./api.js";
 import { fetchComments } from "./fetch.js";
-import { changementLikes } from "./likes.js";
-import { renderComments } from "./renderСomments.js";
+
+export let commentText = "";
+function setCommentText(newValue) {
+  commentText = newValue;
+}
 
 const loaderComments = document.querySelector('.loader-comments');
 
@@ -14,8 +17,6 @@ const loaderComments = document.querySelector('.loader-comments');
 
   let comments = [];
 
-  // renderComments({comments});
-
     export function protectInput(text) {
       return text.replaceAll('<', '&lt').replaceAll('>', '&gt')
       .replaceAll('QUOTE_BEGIN', '<div class="quote">').replaceAll('QUOTE_END', '</div>');
@@ -23,18 +24,19 @@ const loaderComments = document.querySelector('.loader-comments');
 
     const loaderNewcomment = document.querySelector('.loader-newcomment');
 
-    const buttonEl = document.getElementById('button');
+    export function formEvents() {
+      const buttonEl = document.getElementById('button');
     const inputName = document.querySelector('#input');
     const textareaComment = document.getElementById('textarea');
 
   buttonEl.setAttribute('disabled', true);
-  inputName.addEventListener('input', function (e) {
-  if (inputName.value.trim() === '') {
+  textareaComment.addEventListener('input', function (e) {
+  if (textareaComment.value.trim() === '') {
     buttonEl.setAttribute('disabled', true);
   } else {
     buttonEl.removeAttribute('disabled')
   }
-});
+  });
 
   buttonEl.addEventListener('click', () => {
     inputName.classList.remove("error");
@@ -45,18 +47,38 @@ const loaderComments = document.querySelector('.loader-comments');
     };
 
     loaderNewcomment.classList.remove("hidden");
-    // formEl.classList.add("hidden");
+    document.querySelector('.add-form').classList.add("hidden");
+    
+    setCommentText(protectInput(textareaComment.value))
 
   postTodo({
     text: protectInput(textareaComment.value),
     name: protectInput(inputName.value),
   })
   .then(() => {
+    setCommentText("")
+    inputName.value = "";
+    textareaComment.value = "";
+  })
+  .then(() => {
     fetchComments();
   })
+  .catch((error) => {
+    console.log(error);
+    if(error.message === "400") {
+      alert("Имя и комментарий должны быть не короче 3 символов");
+      return;
+    }
+    if(error.message === "500") {
+      alert("Сервер сломался, попробуй позже");
+      return;
+    }  
+      alert("Кажется, у вас сломался интернет, попробуйте позже");
+  })
+  .finally(() => {
+    document.querySelector('.add-form').classList.remove("hidden")
+  })
     
-    changementLikes({comments}, {renderComments});
-    renderComments({comments});    
-  });
+  });}
  
   console.log("It works!");
