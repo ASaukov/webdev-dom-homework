@@ -1,3 +1,4 @@
+// Не используется
 export const getDate = (commentDate) => {
     let d = new Date(commentDate);
   function addZero(a) {

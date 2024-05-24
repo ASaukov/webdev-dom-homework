@@ -1,19 +1,21 @@
-import { getDate } from "./getDate.js";
+// import { getDate } from "./getDate.js";
 import { changementLikes } from "./likes.js";
 import { answerComment } from "./answerComment.js";
 import { user, token } from "./api.js";
 import { renderLogin } from "./loginPage.js";
 import { formEvents } from "./main.js";
+import { format } from "date-fns"
 
 
 
 export const renderComments = ({comments}) => {
   const appElement = document.querySelector('#app');
     const commentsHtml = comments.map((comment, index) => {
+      const getDate = format(new Date(comment.date), 'yyyy-MM-dd hh.mm.ss');
       return `<li class="comment">
         <div class="comment-header">
           <div>${comment.name}</div>
-          <div>${getDate(comment.date)}</div>
+          <div>${getDate}</div>
         </div> 
         <div class="comment-body">
           <div class="comment-text"> 
